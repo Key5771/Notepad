@@ -52,7 +52,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="dateLabel" destination="h9f-AX-M4l" id="3td-4b-9Tr"/>
+                                            <outlet property="contentLabel" destination="h9f-AX-M4l" id="3td-4b-9Tr"/>
                                             <outlet property="titleLabel" destination="8yx-3R-p8b" id="o2s-8u-vHB"/>
                                         </connections>
                                     </tableViewCell>
@@ -167,7 +167,13 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="cIZ-6G-7k8"/>
+                    <navigationItem key="navigationItem" id="cIZ-6G-7k8">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="UVB-li-uBB">
+                            <connections>
+                                <action selector="saveButton:" destination="BYZ-38-t0r" id="LUO-vo-0wK"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="contentTextView" destination="0xf-cf-ay1" id="vY0-xX-Ldm"/>

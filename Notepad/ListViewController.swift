@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     
     @IBOutlet var tableView: UITableView!
     @IBOutlet var editButton: UIBarButtonItem!
@@ -53,6 +53,15 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+    }
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
@@ -60,23 +69,47 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         let managedContext = appDelegate.persistentContainer.viewContext
         
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Note")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedContext, sectionNameKeyPath: nil, cacheName: nil)
+        controller.delegate = self
         
         do {
-            notes = try managedContext.fetch(fetchRequest)
+//            notes = try managedContext.fetch(fetchRequest)
+            try controller.performFetch()
         } catch let error as NSError {
             print("could not fetch. \(error), \(error.userInfo)")
         }
+        
     }
     
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        self.tableView.beginUpdates()
+    }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        self.tableView.reloadData()
-
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        self.tableView.endUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            tableView.insertRows(at: [newIndexPath!], with: .fade)
+            break
+        case .delete:
+            tableView.deleteRows(at: [indexPath!], with: .fade)
+            break
+        case .move:
+            tableView.deleteRows(at: [indexPath!], with: .fade)
+            tableView.insertRows(at: [newIndexPath!], with: .fade)
+            break
+        case .update:
+            tableView.reloadRows(at: [indexPath!], with: .fade)
+            break
+        default:
+            tableView.reloadRows(at: [indexPath!], with: .fade)
+            break
+        }
     }
     
     

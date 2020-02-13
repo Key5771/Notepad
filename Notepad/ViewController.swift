@@ -73,6 +73,7 @@ class ViewController: UIViewController, UITextViewDelegate {
         }
         
         let managedContext = appDelegate.persistentContainer.viewContext
+        managedContext.automaticallyMergesChangesFromParent = true
         
         let entity = NSEntityDescription.entity(forEntityName: "Note", in: managedContext)!
         

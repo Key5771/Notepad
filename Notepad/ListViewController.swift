@@ -15,6 +15,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet var editButton: UIBarButtonItem!
     
     var notes: [NSManagedObject] = []
+    var controller: NSFetchedResultsController<NSFetchRequestResult>?
     
     
     // tableView cell count
@@ -67,11 +68,12 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         let managedContext = appDelegate.persistentContainer.viewContext
+        managedContext.automaticallyMergesChangesFromParent = true
         
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Note")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         
-        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedContext, sectionNameKeyPath: nil, cacheName: nil)
+        controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedContext, sectionNameKeyPath: nil, cacheName: nil)
         controller.delegate = self
         
         do {

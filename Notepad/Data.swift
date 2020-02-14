@@ -11,9 +11,15 @@ import UIKit
 import CoreData
 
 class Data {
-    var index: Int?
+    var id: Int?
     var title: String?
     var content: String?
-//    var image: UIImage?
+    var image: UIImage?
     var timestamp: Date?
+}
+
+extension Data: Equatable {
+    static func ==(lhs: Data, rhs: Data) -> Bool {
+        return lhs.id == rhs.id
+    }
 }

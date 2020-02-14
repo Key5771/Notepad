@@ -17,6 +17,7 @@
 		EA3A3AF223F248880086683C /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3A3AF123F248880086683C /* ListViewController.swift */; };
 		EA3A3AF423F27B140086683C /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3A3AF323F27B140086683C /* ListTableViewCell.swift */; };
 		EA3A3AF823F3ED0F0086683C /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3A3AF723F3ED0F0086683C /* Data.swift */; };
+		EA3A3AFC23F54BB50086683C /* ContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3A3AFB23F54BB40086683C /* ContentViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		EA3A3AF123F248880086683C /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		EA3A3AF323F27B140086683C /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		EA3A3AF723F3ED0F0086683C /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		EA3A3AFB23F54BB40086683C /* ContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 				EA3A3ADE23F244FB0086683C /* ViewController.swift */,
 				EA3A3AF123F248880086683C /* ListViewController.swift */,
 				EA3A3AF323F27B140086683C /* ListTableViewCell.swift */,
+				EA3A3AFB23F54BB40086683C /* ContentViewController.swift */,
 				EA3A3AE023F244FB0086683C /* Main.storyboard */,
 				EA3A3AE623F245020086683C /* Assets.xcassets */,
 				EA3A3AE823F245020086683C /* LaunchScreen.storyboard */,
@@ -150,6 +153,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA3A3AFC23F54BB50086683C /* ContentViewController.swift in Sources */,
 				EA3A3AF823F3ED0F0086683C /* Data.swift in Sources */,
 				EA3A3ADF23F244FB0086683C /* ViewController.swift in Sources */,
 				EA3A3ADB23F244FB0086683C /* AppDelegate.swift in Sources */,

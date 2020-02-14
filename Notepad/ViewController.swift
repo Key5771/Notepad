@@ -13,20 +13,19 @@ class ViewController: UIViewController, UITextViewDelegate {
     @IBOutlet var titleTextField: UITextField!
     @IBOutlet var contentTextView: UITextView!
     
-    var memo: [NSManagedObject] = []
+    let picker = UIImagePickerController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         titleTextField.layer.borderWidth = 1
         titleTextField.layer.borderColor = UIColor.lightGray.cgColor
-        titleTextField.layer.cornerRadius = 5
+//        titleTextField.layer.cornerRadius = 5
         
         contentTextView.delegate = self
         contentTextView.layer.borderWidth = 1
         contentTextView.layer.borderColor = UIColor.lightGray.cgColor
-        contentTextView.layer.cornerRadius = 5
-        // Do any additional setup after loading the view.
+//        contentTextView.layer.cornerRadius = 5
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -84,11 +83,46 @@ class ViewController: UIViewController, UITextViewDelegate {
         
         do {
             try managedContext.save()
-            memo.append(note)
         } catch let error as NSError {
             print("Could not save. \(error), \(error.userInfo)")
         }
     }
+    
+    @IBAction func addPhoto(_ sender: Any) {
+        let alert = UIAlertController(title: "사진추가", message: "선택", preferredStyle: .actionSheet)
+        
+        let library = UIAlertAction(title: "사진앨범", style: .default) {
+            (action) in self.openLibrary()
+        }
+        
+        let camera = UIAlertAction(title: "카메라", style: .default) {
+            (action) in self.openCamera()
+        }
+        
+        let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        
+        alert.addAction(library)
+        alert.addAction(camera)
+        alert.addAction(cancel)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func openLibrary() {
+        picker.sourceType = .photoLibrary
+        present(picker, animated: true, completion: nil)
+    }
+    
+    func openCamera() {
+        if (UIImagePickerController .isSourceTypeAvailable(.camera)) {
+            picker.sourceType = .camera
+            picker.modalPresentationStyle = .fullScreen
+            present(picker, animated: true, completion: nil)
+        } else {
+            print("Camera not available")
+        }
+    }
+    
     
     
 }

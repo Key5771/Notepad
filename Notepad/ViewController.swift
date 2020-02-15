@@ -9,14 +9,39 @@
 import UIKit
 import CoreData
 
-class ViewController: UIViewController, UITextViewDelegate {
+class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UINavigationControllerDelegate {
+    
     @IBOutlet var titleTextField: UITextField!
     @IBOutlet var contentTextView: UITextView!
+    @IBOutlet var collectionView: UICollectionView!
     
     let picker = UIImagePickerController()
     
+    var imageArray: [String] = []
+    let fileManager = FileManager.default
+    
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return imageArray.count
+    }
+        
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as! ImageCollectionViewCell
+        
+        let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let fileURL = documentsURL.appendingPathComponent(imageArray[indexPath.row])
+        cell.imageView.image = UIImage.init(contentsOfFile: fileURL.path)
+        
+        return cell
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
+        picker.delegate = self
         
         titleTextField.layer.borderWidth = 1
         titleTextField.layer.borderColor = UIColor.lightGray.cgColor
@@ -78,8 +103,18 @@ class ViewController: UIViewController, UITextViewDelegate {
         
         let note = NSManagedObject(entity: entity, insertInto: managedContext)
         
+        let images = imageArray.compactMap { (address) -> Image? in
+            let entity = NSEntityDescription.entity(forEntityName: "Image", in: managedContext)!
+            
+            let image = NSManagedObject(entity: entity, insertInto: managedContext) as? Image
+            image?.imageAddress = address
+            
+            return image
+        }
+        
         note.setValue(title, forKey: "title")
         note.setValue(content, forKey: "content")
+        note.setValue(Set(images) as NSSet, forKey: "images")
         
         do {
             try managedContext.save()
@@ -121,6 +156,25 @@ class ViewController: UIViewController, UITextViewDelegate {
         } else {
             print("Camera not available")
         }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            
+            let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            
+            let uuid = NSUUID().uuidString
+
+            let fileURL = documentsURL.appendingPathComponent(uuid)
+
+            let data = image.pngData()
+            try? data?.write(to: fileURL)
+
+            self.imageArray.append(uuid)
+            self.collectionView.reloadData()
+            print(info)
+        }
+        dismiss(animated: true, completion: nil)
     }
     
     

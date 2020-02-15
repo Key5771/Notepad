@@ -18,6 +18,7 @@
 		EA3A3AF423F27B140086683C /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3A3AF323F27B140086683C /* ListTableViewCell.swift */; };
 		EA3A3AF823F3ED0F0086683C /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3A3AF723F3ED0F0086683C /* Data.swift */; };
 		EA3A3AFC23F54BB50086683C /* ContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3A3AFB23F54BB40086683C /* ContentViewController.swift */; };
+		EA8D548423F6949000FE4795 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8D548323F6949000FE4795 /* ImageCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		EA3A3AF323F27B140086683C /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		EA3A3AF723F3ED0F0086683C /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		EA3A3AFB23F54BB40086683C /* ContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewController.swift; sourceTree = "<group>"; };
+		EA8D548323F6949000FE4795 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 				EA3A3AEB23F245020086683C /* Info.plist */,
 				EA3A3AE323F244FB0086683C /* Notepad.xcdatamodeld */,
 				EA3A3AF723F3ED0F0086683C /* Data.swift */,
+				EA8D548323F6949000FE4795 /* ImageCollectionViewCell.swift */,
 			);
 			path = Notepad;
 			sourceTree = "<group>";
@@ -159,6 +162,7 @@
 				EA3A3ADB23F244FB0086683C /* AppDelegate.swift in Sources */,
 				EA3A3ADD23F244FB0086683C /* SceneDelegate.swift in Sources */,
 				EA3A3AF223F248880086683C /* ListViewController.swift in Sources */,
+				EA8D548423F6949000FE4795 /* ImageCollectionViewCell.swift in Sources */,
 				EA3A3AE523F244FB0086683C /* Notepad.xcdatamodeld in Sources */,
 				EA3A3AF423F27B140086683C /* ListTableViewCell.swift in Sources */,
 			);
@@ -305,6 +309,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U53BLS7M93;
 				INFOPLIST_FILE = Notepad/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -323,6 +328,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U53BLS7M93;
 				INFOPLIST_FILE = Notepad/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (

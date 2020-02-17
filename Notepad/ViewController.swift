@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Kingfisher
 
 class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UINavigationControllerDelegate {
     
@@ -28,9 +29,7 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as! ImageCollectionViewCell
         
-        let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let fileURL = documentsURL.appendingPathComponent(imageArray[indexPath.row])
-        cell.imageView.image = UIImage.init(contentsOfFile: fileURL.path)
+        cell.imageView.image = UIImage.init(contentsOfFile: imageArray[indexPath.row])
         
         return cell
     }
@@ -170,13 +169,17 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
             let data = image.pngData()
             try? data?.write(to: fileURL)
 
-            self.imageArray.append(uuid)
+            self.imageArray.append(fileURL.path)
             self.collectionView.reloadData()
             print(info)
         }
         dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func backgroundClick(_ sender: Any) {
+        titleTextField.resignFirstResponder()
+        contentTextView.resignFirstResponder()
+    }
     
     
 }

@@ -8,18 +8,40 @@
 
 import UIKit
 
-class ContentViewController: UIViewController {
+class ContentViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var contentLabel: UILabel!
+    @IBOutlet var collectionView: UICollectionView!
     
     var note: Note?
+    var imageArray: [String] = []
+    let fileManager = FileManager.default
     
 
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return imageArray.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "contentCollectionCell", for: indexPath) as! ContentImageCollectionViewCell
+        
+        cell.imageView.image = UIImage.init(contentsOfFile: imageArray[indexPath.row])
+        
+        
+        return cell
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
 
         titleLabel.text = note?.title
         contentLabel.text = note?.content
+        imageArray = note?.images?.compactMap { ($0 as AnyObject).imageAddress } ?? []
+        collectionView.reloadData()
+        
     }
     
     /*

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9FA8BBF9AC2E28579A240484 /* Pods_Notepad.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6222DD7A4E1E93BAE1B6E09 /* Pods_Notepad.framework */; };
+		1EA6336CC82E6DDAB035D7B3 /* libPods-Notepad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E6BE5566D42FE98BD46C401 /* libPods-Notepad.a */; };
 		EA3A3ADB23F244FB0086683C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3A3ADA23F244FB0086683C /* AppDelegate.swift */; };
 		EA3A3ADD23F244FB0086683C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3A3ADC23F244FB0086683C /* SceneDelegate.swift */; };
 		EA3A3ADF23F244FB0086683C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3A3ADE23F244FB0086683C /* ViewController.swift */; };
@@ -17,16 +17,15 @@
 		EA3A3AEA23F245020086683C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA3A3AE823F245020086683C /* LaunchScreen.storyboard */; };
 		EA3A3AF223F248880086683C /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3A3AF123F248880086683C /* ListViewController.swift */; };
 		EA3A3AF423F27B140086683C /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3A3AF323F27B140086683C /* ListTableViewCell.swift */; };
-		EA3A3AF823F3ED0F0086683C /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3A3AF723F3ED0F0086683C /* Data.swift */; };
 		EA3A3AFC23F54BB50086683C /* ContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3A3AFB23F54BB40086683C /* ContentViewController.swift */; };
 		EA8D548423F6949000FE4795 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8D548323F6949000FE4795 /* ImageCollectionViewCell.swift */; };
 		EAAC51D023F992D000F90591 /* ContentImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAC51CF23F992D000F90591 /* ContentImageCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9E6BE5566D42FE98BD46C401 /* libPods-Notepad.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Notepad.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2929F8AD840199699E36B68 /* Pods-Notepad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Notepad.release.xcconfig"; path = "Target Support Files/Pods-Notepad/Pods-Notepad.release.xcconfig"; sourceTree = "<group>"; };
 		A738AC2FA9251B55BC32B2FD /* Pods-Notepad.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Notepad.debug.xcconfig"; path = "Target Support Files/Pods-Notepad/Pods-Notepad.debug.xcconfig"; sourceTree = "<group>"; };
-		C6222DD7A4E1E93BAE1B6E09 /* Pods_Notepad.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Notepad.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA3A3AD723F244FB0086683C /* Notepad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Notepad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA3A3ADA23F244FB0086683C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EA3A3ADC23F244FB0086683C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -38,7 +37,6 @@
 		EA3A3AEB23F245020086683C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA3A3AF123F248880086683C /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		EA3A3AF323F27B140086683C /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
-		EA3A3AF723F3ED0F0086683C /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		EA3A3AFB23F54BB40086683C /* ContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewController.swift; sourceTree = "<group>"; };
 		EA8D548323F6949000FE4795 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		EAAC51CF23F992D000F90591 /* ContentImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentImageCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -49,7 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9FA8BBF9AC2E28579A240484 /* Pods_Notepad.framework in Frameworks */,
+				1EA6336CC82E6DDAB035D7B3 /* libPods-Notepad.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,7 +57,7 @@
 		3C39F2D0502A65A3B7D70971 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C6222DD7A4E1E93BAE1B6E09 /* Pods_Notepad.framework */,
+				9E6BE5566D42FE98BD46C401 /* libPods-Notepad.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -70,7 +68,6 @@
 				A738AC2FA9251B55BC32B2FD /* Pods-Notepad.debug.xcconfig */,
 				A2929F8AD840199699E36B68 /* Pods-Notepad.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -101,14 +98,13 @@
 				EA3A3AF123F248880086683C /* ListViewController.swift */,
 				EA3A3AF323F27B140086683C /* ListTableViewCell.swift */,
 				EA3A3AFB23F54BB40086683C /* ContentViewController.swift */,
+				EA8D548323F6949000FE4795 /* ImageCollectionViewCell.swift */,
+				EAAC51CF23F992D000F90591 /* ContentImageCollectionViewCell.swift */,
 				EA3A3AE023F244FB0086683C /* Main.storyboard */,
 				EA3A3AE623F245020086683C /* Assets.xcassets */,
 				EA3A3AE823F245020086683C /* LaunchScreen.storyboard */,
 				EA3A3AEB23F245020086683C /* Info.plist */,
 				EA3A3AE323F244FB0086683C /* Notepad.xcdatamodeld */,
-				EA3A3AF723F3ED0F0086683C /* Data.swift */,
-				EA8D548323F6949000FE4795 /* ImageCollectionViewCell.swift */,
-				EAAC51CF23F992D000F90591 /* ContentImageCollectionViewCell.swift */,
 			);
 			path = Notepad;
 			sourceTree = "<group>";
@@ -124,7 +120,6 @@
 				EA3A3AD323F244FB0086683C /* Sources */,
 				EA3A3AD423F244FB0086683C /* Frameworks */,
 				EA3A3AD523F244FB0086683C /* Resources */,
-				B88BA9F2F82FF4FFFFC0BA88 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -204,23 +199,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B88BA9F2F82FF4FFFFC0BA88 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Notepad/Pods-Notepad-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Notepad/Pods-Notepad-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Notepad/Pods-Notepad-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -229,7 +207,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA3A3AFC23F54BB50086683C /* ContentViewController.swift in Sources */,
-				EA3A3AF823F3ED0F0086683C /* Data.swift in Sources */,
 				EA3A3ADF23F244FB0086683C /* ViewController.swift in Sources */,
 				EA3A3ADB23F244FB0086683C /* AppDelegate.swift in Sources */,
 				EA3A3ADD23F244FB0086683C /* SceneDelegate.swift in Sources */,

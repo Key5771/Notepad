@@ -137,7 +137,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         if segue.identifier == "content" {
             if let row = tableView.indexPathForSelectedRow {
                 let vc = segue.destination as? ContentViewController
-                
                 let content = self.controller?.object(at: row) as? Note
                 
                 vc?.note = content

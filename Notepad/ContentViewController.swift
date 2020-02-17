@@ -17,7 +17,6 @@ class ContentViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     var note: Note?
     var imageArray: [String] = []
-    let fileManager = FileManager.default
     
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -29,13 +28,18 @@ class ContentViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         cell.imageView.image = UIImage.init(contentsOfFile: imageArray[indexPath.row])
         
-        
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("\(indexPath.row)")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        collectionView.delegate = self
+        collectionView.dataSource = self
 
         titleLabel.text = note?.title
         contentLabel.text = note?.content

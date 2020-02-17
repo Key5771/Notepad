@@ -34,6 +34,14 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        collectionView.deselectItem(at: indexPath, animated: true)
+        self.imageArray.remove(at: indexPath.row)
+        self.collectionView.deleteItems(at: [indexPath])
+        self.collectionView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -44,12 +52,10 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
         
         titleTextField.layer.borderWidth = 1
         titleTextField.layer.borderColor = UIColor.lightGray.cgColor
-//        titleTextField.layer.cornerRadius = 5
         
         contentTextView.delegate = self
         contentTextView.layer.borderWidth = 1
         contentTextView.layer.borderColor = UIColor.lightGray.cgColor
-//        contentTextView.layer.cornerRadius = 5
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -65,7 +71,15 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
     func textViewSetupView() {
         if contentTextView.text == "내용입력" {
             contentTextView.text = ""
-            contentTextView.textColor = UIColor.black
+            if #available(iOS 12.0, *) {
+                if self.traitCollection.userInterfaceStyle == .dark {
+                    contentTextView.textColor = UIColor.white
+                } else {
+                    contentTextView.textColor = UIColor.black
+                }
+            } else {
+                // Fallback on earlier versions
+            }
         } else if contentTextView.text == "" {
             contentTextView.text = "내용입력"
             contentTextView.textColor = UIColor.lightGray
@@ -164,7 +178,7 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
             
             let uuid = NSUUID().uuidString
 
-            let fileURL = documentsURL.appendingPathComponent(uuid)
+            let fileURL = documentsURL.appendingPathComponent(uuid).appendingPathExtension("png")
 
             let data = image.pngData()
             try? data?.write(to: fileURL)
@@ -180,7 +194,5 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
         titleTextField.resignFirstResponder()
         contentTextView.resignFirstResponder()
     }
-    
-    
 }
 

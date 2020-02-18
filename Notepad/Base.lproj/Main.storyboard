@@ -60,6 +60,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="contentLabel" destination="h9f-AX-M4l" id="3td-4b-9Tr"/>
+                                            <outlet property="thumbNailImage" destination="hrv-gK-agg" id="687-as-RoZ"/>
                                             <outlet property="titleLabel" destination="8yx-3R-p8b" id="o2s-8u-vHB"/>
                                             <segue destination="6y9-Uq-cGo" kind="show" identifier="content" id="0EP-oG-mhK"/>
                                         </connections>
@@ -241,7 +242,7 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="cIZ-6G-7k8">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="UVB-li-uBB">
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="UVB-li-uBB">
                             <connections>
                                 <action selector="saveButton:" destination="BYZ-38-t0r" id="LUO-vo-0wK"/>
                             </connections>
@@ -255,7 +256,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="Yyz-7k-l3E">
+                <tapGestureRecognizer cancelsTouchesInView="NO" id="Yyz-7k-l3E">
                     <connections>
                         <action selector="backgroundClick:" destination="BYZ-38-t0r" id="g0y-TF-axz"/>
                     </connections>
@@ -356,7 +357,11 @@
                     </view>
                     <navigationItem key="navigationItem" id="E3K-r8-D3i">
                         <rightBarButtonItems>
-                            <barButtonItem systemItem="trash" id="80B-9Z-11t"/>
+                            <barButtonItem systemItem="trash" id="80B-9Z-11t">
+                                <connections>
+                                    <action selector="deleteButton:" destination="6y9-Uq-cGo" id="cDA-18-rdf"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem systemItem="compose" id="K9Q-6E-r8d"/>
                         </rightBarButtonItems>
                     </navigationItem>

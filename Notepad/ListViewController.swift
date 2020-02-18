@@ -15,6 +15,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet var editButton: UIBarButtonItem!
     
     var controller: NSFetchedResultsController<NSManagedObject>?
+    var imageArray: [String] = []
     
     
     // tableView cell count
@@ -30,6 +31,8 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
 
         cell.titleLabel.text = content?.title
         cell.contentLabel.text = content?.content
+        print("####################################")
+        print(content?.images as Any)
 
         return cell
     }
@@ -80,6 +83,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedContext, sectionNameKeyPath: nil, cacheName: nil)
         controller?.delegate = self
+        
         
         do {
             try controller?.performFetch()

@@ -17,7 +17,6 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
     @IBOutlet var collectionView: UICollectionView!
     
     let picker = UIImagePickerController()
-    
     var imageArray: [String] = []
     let fileManager = FileManager.default
     
@@ -35,11 +34,22 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaa")
-        collectionView.deselectItem(at: indexPath, animated: true)
-        self.imageArray.remove(at: indexPath.row)
-        self.collectionView.deleteItems(at: [indexPath])
-        self.collectionView.reloadData()
+        let alert = UIAlertController(title: "사진삭제", message: "삭제하시겠습니까?", preferredStyle: .alert)
+        
+        let okButton = UIAlertAction(title: "확인", style: .default) { (_) in
+            collectionView.deselectItem(at: indexPath, animated: true)
+            self.imageArray.remove(at: indexPath.row)
+            self.collectionView.deleteItems(at: [indexPath])
+            self.collectionView.reloadData()
+        }
+        
+        let cancelButton = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        
+        alert.addAction(okButton)
+        alert.addAction(cancelButton)
+        
+        present(alert, animated: true)
+        
     }
     
     override func viewDidLoad() {
@@ -89,11 +99,11 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
     @IBAction func saveButton(_ sender: Any) {
         let titleToSave = titleTextField.text!
         let contentToSave = contentTextView.text!
+        let dateToSave = Date()
         
         let alert = UIAlertController(title: "저장", message: "저장되었습니다", preferredStyle: .alert)
         
         let okButton = UIAlertAction(title: "확인", style: .default, handler: { (_) in
-//            self.dismiss(animated: true, completion: nil)
             self.navigationController?.popViewController(animated: true)
         })
         
@@ -101,10 +111,10 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
         
         present(alert, animated: true)
         
-        self.save(title: titleToSave, content: contentToSave)
+        self.save(title: titleToSave, content: contentToSave, createDate: dateToSave)
     }
     
-    func save(title: String, content: String) {
+    func save(title: String, content: String, createDate: Date) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
@@ -127,6 +137,7 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
         
         note.setValue(title, forKey: "title")
         note.setValue(content, forKey: "content")
+        note.setValue(createDate, forKey: "createDate")
         note.setValue(Set(images) as NSSet, forKey: "images")
         
         do {

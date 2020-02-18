@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ContentViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -47,6 +48,48 @@ class ContentViewController: UIViewController, UICollectionViewDelegate, UIColle
         collectionView.reloadData()
         
     }
+    
+    @IBAction func deleteButton(_ sender: Any) {
+        
+        let alert = UIAlertController(title: "삭제", message: "삭제하시겠습니까?", preferredStyle: .alert)
+        
+        let okButton = UIAlertAction(title: "확인", style: .default) { (_) in
+            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+                return
+            }
+            
+            let managedContext = appDelegate.persistentContainer.viewContext
+            
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Note")
+            fetchRequest.predicate = NSPredicate(format: "title = %@", self.titleLabel.text ?? "")
+            
+            do {
+                let test = try managedContext.fetch(fetchRequest)
+                
+                let objectToDelete = test[0] as! NSManagedObject
+                managedContext.delete(objectToDelete)
+                
+                do {
+                    try managedContext.save()
+                } catch {
+                    print(error)
+                }
+            } catch {
+                print(error)
+            }
+            
+            self.navigationController?.popViewController(animated: true)
+        }
+        
+        let cancelButton = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        
+        alert.addAction(okButton)
+        alert.addAction(cancelButton)
+        
+        present(alert, animated: true)
+    }
+    
+    
     
     /*
     // MARK: - Navigation

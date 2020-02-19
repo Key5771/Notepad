@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Kingfisher
 
 class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     
@@ -15,7 +16,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet var editButton: UIBarButtonItem!
     
     var controller: NSFetchedResultsController<NSManagedObject>?
-    var imageArray: [String] = []
     
     
     // tableView cell count
@@ -28,11 +28,19 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cell = tableView.dequeueReusableCell(withIdentifier: "listContentCell", for: indexPath) as! ListTableViewCell
         
         let content = self.controller?.object(at: indexPath) as? Note
+        let image = content?.images?.firstObject as? Image
+        let address = image?.imageAddress
 
         cell.titleLabel.text = content?.title
         cell.contentLabel.text = content?.content
-        print("####################################")
-        print(content?.images as Any)
+        
+        if (address?.contains("http"))! {
+            let url = URL(string: address!)
+            cell.thumbNailImage.kf.setImage(with: url)
+        } else {
+            cell.thumbNailImage.image = UIImage.init(contentsOfFile: address ?? "")
+        }
+        
 
         return cell
     }
@@ -79,7 +87,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         managedContext.automaticallyMergesChangesFromParent = true
         
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Note")
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createDate", ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createDate", ascending: false)]
         
         controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedContext, sectionNameKeyPath: nil, cacheName: nil)
         controller?.delegate = self

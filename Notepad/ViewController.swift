@@ -17,9 +17,12 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
     @IBOutlet var collectionView: UICollectionView!
     
     let picker = UIImagePickerController()
-    var imageArray: [String] = []
     let fileManager = FileManager.default
+    var imageArray: [String] = []
+    var editTitle: String = ""
+    var editContent: String = ""
     
+    var note: Note?
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return imageArray.count
@@ -28,15 +31,23 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as! ImageCollectionViewCell
         
-        cell.imageView.image = UIImage.init(contentsOfFile: imageArray[indexPath.row])
+        
+        if imageArray[indexPath.row].contains("http") {
+            let url = URL(string: imageArray[indexPath.row])
+            cell.imageView.kf.setImage(with: url)
+        } else {
+            cell.imageView.image = UIImage.init(contentsOfFile: imageArray[indexPath.row])
+        }
+        
+        
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let alert = UIAlertController(title: "사진삭제", message: "삭제하시겠습니까?", preferredStyle: .alert)
+        let alert = UIAlertController(title: "사진삭제", message: "삭제하시겠습니까?", preferredStyle: .actionSheet)
         
-        let okButton = UIAlertAction(title: "확인", style: .default) { (_) in
+        let okButton = UIAlertAction(title: "삭제", style: .default) { (_) in
             collectionView.deselectItem(at: indexPath, animated: true)
             self.imageArray.remove(at: indexPath.row)
             self.collectionView.deleteItems(at: [indexPath])
@@ -66,6 +77,12 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
         contentTextView.delegate = self
         contentTextView.layer.borderWidth = 1
         contentTextView.layer.borderColor = UIColor.lightGray.cgColor
+        
+        if note != nil {
+            titleTextField.text = note?.title
+            contentTextView.text = note?.content
+        }
+        
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -101,17 +118,27 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
         let contentToSave = contentTextView.text!
         let dateToSave = Date()
         
-        let alert = UIAlertController(title: "저장", message: "저장되었습니다", preferredStyle: .alert)
+        let alert = UIAlertController(title: "저장", message: "저장하시겠습니까?", preferredStyle: .alert)
         
         let okButton = UIAlertAction(title: "확인", style: .default, handler: { (_) in
             self.navigationController?.popViewController(animated: true)
+            
+            if self.note != nil {
+                self.updateData(title: titleToSave, content: contentToSave, updateDate: dateToSave)
+            } else {
+                self.save(title: titleToSave, content: contentToSave, createDate: dateToSave)
+            }
         })
+        let cancelButton = UIAlertAction(title: "취소", style: .cancel, handler: nil)
         
         alert.addAction(okButton)
+        alert.addAction(cancelButton)
         
         present(alert, animated: true)
         
-        self.save(title: titleToSave, content: contentToSave, createDate: dateToSave)
+        print("-----------------------------------")
+        print(imageArray)
+        
     }
     
     func save(title: String, content: String, createDate: Date) {
@@ -138,7 +165,7 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
         note.setValue(title, forKey: "title")
         note.setValue(content, forKey: "content")
         note.setValue(createDate, forKey: "createDate")
-        note.setValue(Set(images) as NSSet, forKey: "images")
+        note.setValue(NSOrderedSet(array: images), forKey: "images")
         
         do {
             try managedContext.save()
@@ -146,6 +173,38 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
             print("Could not save. \(error), \(error.userInfo)")
         }
     }
+    
+    func updateData(title: String, content: String, updateDate: Date) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+         
+        //We need to create a context from this container
+        let managedContext = appDelegate.persistentContainer.viewContext
+         
+        let fetchRequest:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest.init(entityName: "Note")
+        fetchRequest.predicate = NSPredicate(format: "title = %@", titleTextField.text ?? "")
+        
+        let images = imageArray.compactMap { (address) -> Image? in
+            let entity = NSEntityDescription.entity(forEntityName: "Image", in: managedContext)!
+            
+            let image = NSManagedObject(entity: entity, insertInto: managedContext) as? Image
+            image?.imageAddress = address
+            
+            return image
+        }
+        
+        do {
+            note?.title = title
+            note?.content = content
+            note?.createDate = updateDate
+            note?.setValue(NSOrderedSet(array: images), forKey: "images")
+             do {
+                 try managedContext.save()
+             } catch {
+                 print(error)
+             }
+         }
+    
+     }
     
     @IBAction func addPhoto(_ sender: Any) {
         let alert = UIAlertController(title: "사진추가", message: "선택", preferredStyle: .actionSheet)
@@ -158,11 +217,32 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
             (action) in self.openCamera()
         }
         
+        let file = UIAlertAction(title: "사진추가", style: .default) { (_) in
+            let alert = UIAlertController(title: "사진추가", message: "경로를 입력하세요.", preferredStyle: .alert)
+            
+            let action = UIAlertAction(title: "추가", style: .default) { (alertAction) in
+                let textField = alert.textFields![0] as UITextField
+                
+                self.imageArray.append(textField.text ?? "")
+                self.collectionView.reloadData()
+            }
+            
+            let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            alert.addTextField { (textField) in
+                textField.placeholder = "경로"
+            }
+            
+            alert.addAction(action)
+            alert.addAction(cancel)
+            self.present(alert, animated: true, completion: nil)
+        }
+        
         let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
         
         alert.addAction(library)
         alert.addAction(camera)
         alert.addAction(cancel)
+        alert.addAction(file)
         
         present(alert, animated: true, completion: nil)
     }
@@ -191,12 +271,11 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
 
             let fileURL = documentsURL.appendingPathComponent(uuid).appendingPathExtension("png")
 
-            let data = image.pngData()
+            let data = image.fixOrientation().pngData()
             try? data?.write(to: fileURL)
 
             self.imageArray.append(fileURL.path)
             self.collectionView.reloadData()
-            print(info)
         }
         dismiss(animated: true, completion: nil)
     }
@@ -204,6 +283,69 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
     @IBAction func backgroundClick(_ sender: Any) {
         titleTextField.resignFirstResponder()
         contentTextView.resignFirstResponder()
+    }
+}
+
+extension UIImage {
+    func fixOrientation() -> UIImage {
+        if self.imageOrientation == .up {
+            return self
+        }
+        
+        var transform = CGAffineTransform.identity
+        
+        switch self.imageOrientation {
+        case .down, .downMirrored:
+            transform = transform.translatedBy(x: self.size.width, y: self.size.height)
+            transform = transform.rotated(by: .pi)
+            break
+            
+        case .left, .leftMirrored:
+            transform = transform.translatedBy(x: self.size.width, y: 0)
+            transform = transform.rotated(by: .pi / 2)
+            break
+            
+        case .right, .rightMirrored:
+            transform = transform.translatedBy(x: 0, y: self.size.height)
+            transform = transform.rotated(by: -.pi / 2)
+            break
+
+        default:
+            break
+        }
+        
+        switch self.imageOrientation {
+        case .upMirrored, .downMirrored:
+            transform = transform.translatedBy(x: self.size.width, y: 0)
+            transform = transform.scaledBy(x: -1, y: 1)
+            break
+            
+        case .leftMirrored, .rightMirrored:
+            transform = transform.translatedBy(x: self.size.height, y: 0)
+            transform = transform.scaledBy(x: -1, y: 1)
+            break
+            
+        default:
+            break
+        }
+        
+        let ctx = CGContext(data: nil, width: Int(self.size.width), height: Int(self.size.height), bitsPerComponent: self.cgImage!.bitsPerComponent, bytesPerRow: 0, space: self.cgImage!.colorSpace!, bitmapInfo: self.cgImage!.bitmapInfo.rawValue)
+        ctx?.concatenate(transform)
+        
+        switch self.imageOrientation {
+        case .left, .leftMirrored, .right, .rightMirrored:
+            ctx?.draw(self.cgImage!, in: CGRect(x: CGFloat(0), y: CGFloat(0), width: CGFloat(size.height), height: CGFloat(size.width)))
+            break
+            
+        default:
+            ctx?.draw(self.cgImage!, in: CGRect(x: CGFloat(0), y: CGFloat(0), width: CGFloat(size.width), height: CGFloat(size.height)))
+            break
+        }
+        
+        let cgimg: CGImage = (ctx?.makeImage())!
+        let img = UIImage(cgImage: cgimg)
+        
+        return img
     }
 }
 

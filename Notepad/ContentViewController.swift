@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Kingfisher
 
 class ContentViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -27,7 +28,12 @@ class ContentViewController: UIViewController, UICollectionViewDelegate, UIColle
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "contentCollectionCell", for: indexPath) as! ContentImageCollectionViewCell
         
-        cell.imageView.image = UIImage.init(contentsOfFile: imageArray[indexPath.row])
+        if imageArray[indexPath.row].contains("http") {
+            let url = URL(string: imageArray[indexPath.row])
+            cell.imageView.kf.setImage(with: url)
+        } else {
+            cell.imageView.image = UIImage.init(contentsOfFile: imageArray[indexPath.row])
+        }
         
         return cell
     }
@@ -91,14 +97,27 @@ class ContentViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     
     
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "editNote" {
+            let vc = segue.destination as? ViewController
+            
+//            vc?.editTitle = self.titleLabel.text!
+//            vc?.editContent = self.contentLabel.text!
+//            vc?.imageArray = self.imageArray
+            
+            vc?.note = note
+            vc?.imageArray = self.imageArray
+            
+            self.navigationController?.popViewController(animated: true)
+        }
     }
-    */
+    
 
 }

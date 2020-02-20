@@ -83,7 +83,14 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
             contentTextView.text = note?.content
         }
         
+        if #available(iOS 11.0, *) {
+            self.navigationItem.largeTitleDisplayMode = .never
+        } else {
+            // Fallback on earlier versions
+        }
     }
+    
+    
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         textViewSetupView()

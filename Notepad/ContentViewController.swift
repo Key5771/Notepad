@@ -53,6 +53,11 @@ class ContentViewController: UIViewController, UICollectionViewDelegate, UIColle
         imageArray = note?.images?.compactMap { ($0 as AnyObject).imageAddress } ?? []
         collectionView.reloadData()
         
+        if #available(iOS 11.0, *) {
+            self.navigationItem.largeTitleDisplayMode = .never
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     @IBAction func deleteButton(_ sender: Any) {

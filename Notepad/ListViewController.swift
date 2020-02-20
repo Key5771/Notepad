@@ -34,13 +34,13 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.titleLabel.text = content?.title
         cell.contentLabel.text = content?.content
         
-        if (address?.contains("http"))! {
+        
+        if address?.contains("http") == true {
             let url = URL(string: address!)
             cell.thumbNailImage.kf.setImage(with: url)
         } else {
             cell.thumbNailImage.image = UIImage.init(contentsOfFile: address ?? "")
         }
-        
 
         return cell
     }
@@ -72,7 +72,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -99,9 +98,14 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             print("could not fetch. \(error), \(error.userInfo)")
         }
         
+        if #available(iOS 11.0, *) {
+            self.navigationController?.navigationBar.prefersLargeTitles = true
+            self.title = "메모"
+        } else {
+            // Fallback on earlier versions
+        }
     }
 
-    
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.beginUpdates()
     }
@@ -143,8 +147,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "content" {
             if let row = tableView.indexPathForSelectedRow {
@@ -157,6 +159,4 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
         }
     }
-    
-
 }

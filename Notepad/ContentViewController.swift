@@ -19,6 +19,7 @@ class ContentViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     var note: Note?
     var imageArray: [String] = []
+    let fileManager = FileManager.default
     
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -78,6 +79,13 @@ class ContentViewController: UIViewController, UICollectionViewDelegate, UIColle
                 let test = try managedContext.fetch(fetchRequest)
                 
                 let objectToDelete = test[0] as! NSManagedObject
+                
+                for image in self.note!.images! {
+                    if self.fileManager.fileExists(atPath: (image as AnyObject).imageAddress ?? "") {
+                        try! self.fileManager.removeItem(atPath: (image as AnyObject).imageAddress ?? "")
+                    }
+                }
+                
                 managedContext.delete(objectToDelete)
                 
                 do {
@@ -88,7 +96,6 @@ class ContentViewController: UIViewController, UICollectionViewDelegate, UIColle
             } catch {
                 print(error)
             }
-            
             self.navigationController?.popViewController(animated: true)
         }
         

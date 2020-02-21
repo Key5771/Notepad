@@ -7,7 +7,7 @@
         <attribute name="content" optional="YES" attributeType="String"/>
         <attribute name="createDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" optional="YES" attributeType="String"/>
-        <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Image"/>
+        <relationship name="images" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Image"/>
     </entity>
     <elements>
         <element name="Image" positionX="134.203125" positionY="-65.75390625" width="128" height="58"/>

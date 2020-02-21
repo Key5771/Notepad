@@ -19,9 +19,6 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
     let picker = UIImagePickerController()
     let fileManager = FileManager.default
     var imageArray: [String] = []
-    var editTitle: String = ""
-    var editContent: String = ""
-    
     var note: Note?
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -142,10 +139,6 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
         alert.addAction(cancelButton)
         
         present(alert, animated: true)
-        
-        print("-----------------------------------")
-        print(imageArray)
-        
     }
     
     func save(title: String, content: String, createDate: Date) {

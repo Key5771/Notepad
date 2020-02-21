@@ -16,6 +16,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet var editButton: UIBarButtonItem!
     
     var controller: NSFetchedResultsController<NSManagedObject>?
+    var fileManager = FileManager.default
     
     
     // tableView cell count
@@ -63,6 +64,12 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
             
             do {
+                let content = self.controller?.object(at: indexPath) as? Note
+                for image in content!.images! {
+                    if self.fileManager.fileExists(atPath: (image as AnyObject).imageAddress ?? "") {
+                        try! self.fileManager.removeItem(atPath: (image as AnyObject).imageAddress ?? "")
+                    }
+                }
                 context.delete(memo)
                 try context.save()
             } catch {
@@ -134,7 +141,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             break
         }
     }
-    
     
     // edit button click
     @IBAction func edit(_ sender: Any) {

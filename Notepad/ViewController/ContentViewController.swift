@@ -10,9 +10,7 @@ import UIKit
 import CoreData
 import Kingfisher
 
-class ContentViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
-    
-    
+class ContentViewController: UIViewController {
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var contentLabel: UILabel!
     @IBOutlet var collectionView: UICollectionView!
@@ -21,44 +19,26 @@ class ContentViewController: UIViewController, UICollectionViewDelegate, UIColle
     var imageArray: [String] = []
     let fileManager = FileManager.default
     
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imageArray.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "contentCollectionCell", for: indexPath) as! ContentImageCollectionViewCell
-        
-        if imageArray[indexPath.row].contains("http") {
-            let url = URL(string: imageArray[indexPath.row])
-            cell.imageView.kf.setImage(with: url)
-        } else {
-            cell.imageView.image = UIImage.init(contentsOfFile: imageArray[indexPath.row])
-        }
-        
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("\(indexPath.row)")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         collectionView.delegate = self
         collectionView.dataSource = self
-
-        titleLabel.text = note?.title
-        contentLabel.text = note?.content
-        imageArray = note?.images?.compactMap { ($0 as AnyObject).imageAddress } ?? []
-        collectionView.reloadData()
+        
+        setUpContent()
         
         if #available(iOS 11.0, *) {
             self.navigationItem.largeTitleDisplayMode = .never
         } else {
             // Fallback on earlier versions
         }
+    }
+    
+    private func setUpContent() {
+        titleLabel.text = note?.title
+        contentLabel.text = note?.content
+        imageArray = note?.images?.compactMap { ($0 as AnyObject).imageAddress } ?? []
+        collectionView.reloadData()
     }
     
     @IBAction func deleteButton(_ sender: Any) {
@@ -107,29 +87,39 @@ class ContentViewController: UIViewController, UICollectionViewDelegate, UIColle
         present(alert, animated: true)
     }
     
-    
-    
-    
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
         
         if segue.identifier == "editNote" {
             let vc = segue.destination as? ViewController
-            
-//            vc?.editTitle = self.titleLabel.text!
-//            vc?.editContent = self.contentLabel.text!
-//            vc?.imageArray = self.imageArray
-            
             vc?.note = note
             vc?.imageArray = self.imageArray
             
             self.navigationController?.popViewController(animated: true)
         }
     }
-    
+}
 
+extension ContentViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return imageArray.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "contentCollectionCell", for: indexPath) as! ContentImageCollectionViewCell
+        
+        if imageArray[indexPath.row].contains("http") {
+            let url = URL(string: imageArray[indexPath.row])
+            cell.imageView.kf.setImage(with: url)
+        } else {
+            cell.imageView.image = UIImage.init(contentsOfFile: imageArray[indexPath.row])
+        }
+        
+        return cell
+    }
+}
+
+extension ContentViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("\(indexPath.row)")
+    }
 }

@@ -92,14 +92,10 @@
 		EA3A3AD923F244FB0086683C /* Notepad */ = {
 			isa = PBXGroup;
 			children = (
+				EAD81A232400EE1000619FC6 /* Cell */,
+				EAD81A222400EDF500619FC6 /* ViewController */,
 				EA3A3ADA23F244FB0086683C /* AppDelegate.swift */,
 				EA3A3ADC23F244FB0086683C /* SceneDelegate.swift */,
-				EA3A3ADE23F244FB0086683C /* ViewController.swift */,
-				EA3A3AF123F248880086683C /* ListViewController.swift */,
-				EA3A3AFB23F54BB40086683C /* ContentViewController.swift */,
-				EA3A3AF323F27B140086683C /* ListTableViewCell.swift */,
-				EA8D548323F6949000FE4795 /* ImageCollectionViewCell.swift */,
-				EAAC51CF23F992D000F90591 /* ContentImageCollectionViewCell.swift */,
 				EA3A3AE023F244FB0086683C /* Main.storyboard */,
 				EA3A3AE623F245020086683C /* Assets.xcassets */,
 				EA3A3AE823F245020086683C /* LaunchScreen.storyboard */,
@@ -107,6 +103,26 @@
 				EA3A3AE323F244FB0086683C /* Notepad.xcdatamodeld */,
 			);
 			path = Notepad;
+			sourceTree = "<group>";
+		};
+		EAD81A222400EDF500619FC6 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				EA3A3ADE23F244FB0086683C /* ViewController.swift */,
+				EA3A3AF123F248880086683C /* ListViewController.swift */,
+				EA3A3AFB23F54BB40086683C /* ContentViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		EAD81A232400EE1000619FC6 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				EA3A3AF323F27B140086683C /* ListTableViewCell.swift */,
+				EA8D548323F6949000FE4795 /* ImageCollectionViewCell.swift */,
+				EAAC51CF23F992D000F90591 /* ContentImageCollectionViewCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

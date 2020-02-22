@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import Kingfisher
 
-class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UINavigationControllerDelegate {
+class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet var titleTextField: UITextField!
     @IBOutlet var contentTextView: UITextView!
@@ -21,45 +21,6 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
     var imageArray: [String] = []
     var note: Note?
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imageArray.count
-    }
-        
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as! ImageCollectionViewCell
-        
-        
-        if imageArray[indexPath.row].contains("http") {
-            let url = URL(string: imageArray[indexPath.row])
-            cell.imageView.kf.setImage(with: url)
-        } else {
-            cell.imageView.image = UIImage.init(contentsOfFile: imageArray[indexPath.row])
-        }
-        
-        
-        
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let alert = UIAlertController(title: "사진삭제", message: "삭제하시겠습니까?", preferredStyle: .actionSheet)
-        
-        let okButton = UIAlertAction(title: "삭제", style: .default) { (_) in
-            collectionView.deselectItem(at: indexPath, animated: true)
-            self.imageArray.remove(at: indexPath.row)
-            self.collectionView.deleteItems(at: [indexPath])
-            self.collectionView.reloadData()
-        }
-        
-        let cancelButton = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-        
-        alert.addAction(okButton)
-        alert.addAction(cancelButton)
-        
-        present(alert, animated: true)
-        
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -68,6 +29,16 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
         
         picker.delegate = self
         
+        setUpText()
+        
+        if #available(iOS 11.0, *) {
+            self.navigationItem.largeTitleDisplayMode = .never
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
+    private func setUpText() {
         titleTextField.layer.borderWidth = 1
         titleTextField.layer.borderColor = UIColor.lightGray.cgColor
         
@@ -79,15 +50,7 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
             titleTextField.text = note?.title
             contentTextView.text = note?.content
         }
-        
-        if #available(iOS 11.0, *) {
-            self.navigationItem.largeTitleDisplayMode = .never
-        } else {
-            // Fallback on earlier versions
-        }
     }
-    
-    
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         textViewSetupView()
@@ -99,7 +62,7 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
         }
     }
     
-    func textViewSetupView() {
+    private func textViewSetupView() {
         if contentTextView.text == "내용입력" {
             contentTextView.text = ""
             if #available(iOS 12.0, *) {
@@ -141,7 +104,7 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
         present(alert, animated: true)
     }
     
-    func save(title: String, content: String, createDate: Date) {
+    private func save(title: String, content: String, createDate: Date) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
@@ -174,7 +137,7 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
         }
     }
     
-    func updateData(title: String, content: String, updateDate: Date) {
+    private func updateData(title: String, content: String, updateDate: Date) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
          
         //We need to create a context from this container
@@ -217,42 +180,26 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
             (action) in self.openCamera()
         }
         
-        let file = UIAlertAction(title: "사진추가", style: .default) { (_) in
-            let alert = UIAlertController(title: "사진추가", message: "경로를 입력하세요.", preferredStyle: .alert)
-            
-            let action = UIAlertAction(title: "추가", style: .default) { (alertAction) in
-                let textField = alert.textFields![0] as UITextField
-                
-                self.imageArray.append(textField.text ?? "")
-                self.collectionView.reloadData()
-            }
-            
-            let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-            alert.addTextField { (textField) in
-                textField.placeholder = "경로"
-            }
-            
-            alert.addAction(action)
-            alert.addAction(cancel)
-            self.present(alert, animated: true, completion: nil)
+        let file = UIAlertAction(title: "사진추가", style: .default) {
+            (action) in self.openFilePath()
         }
         
         let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
         
         alert.addAction(library)
         alert.addAction(camera)
-        alert.addAction(cancel)
         alert.addAction(file)
+        alert.addAction(cancel)
         
         present(alert, animated: true, completion: nil)
     }
     
-    func openLibrary() {
+    private func openLibrary() {
         picker.sourceType = .photoLibrary
         present(picker, animated: true, completion: nil)
     }
     
-    func openCamera() {
+    private func openCamera() {
         if (UIImagePickerController .isSourceTypeAvailable(.camera)) {
             picker.sourceType = .camera
             picker.modalPresentationStyle = .fullScreen
@@ -260,6 +207,26 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
         } else {
             print("Camera not available")
         }
+    }
+    
+    private func openFilePath() {
+        let alert = UIAlertController(title: "사진추가", message: "경로를 입력하세요.", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "추가", style: .default) { (_) in
+            let textField = alert.textFields![0] as UITextField
+            
+            self.imageArray.append(textField.text ?? "")
+            self.collectionView.reloadData()
+        }
+        
+        let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        alert.addTextField { (textField) in
+            textField.placeholder = "경로"
+        }
+        
+        alert.addAction(action)
+        alert.addAction(cancel)
+        self.present(alert, animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -346,6 +313,46 @@ extension UIImage {
         let img = UIImage(cgImage: cgimg)
         
         return img
+    }
+}
+
+extension ViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return imageArray.count
+    }
+        
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as! ImageCollectionViewCell
+        
+        
+        if imageArray[indexPath.row].contains("http") {
+            let url = URL(string: imageArray[indexPath.row])
+            cell.imageView.kf.setImage(with: url)
+        } else {
+            cell.imageView.image = UIImage.init(contentsOfFile: imageArray[indexPath.row])
+        }
+        return cell
+    }
+}
+
+extension ViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let alert = UIAlertController(title: "사진삭제", message: "삭제하시겠습니까?", preferredStyle: .actionSheet)
+        
+        let okButton = UIAlertAction(title: "삭제", style: .default) { (_) in
+            collectionView.deselectItem(at: indexPath, animated: true)
+            self.imageArray.remove(at: indexPath.row)
+            self.collectionView.deleteItems(at: [indexPath])
+            self.collectionView.reloadData()
+        }
+        
+        let cancelButton = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        
+        alert.addAction(okButton)
+        alert.addAction(cancelButton)
+        
+        present(alert, animated: true)
+        
     }
 }
 

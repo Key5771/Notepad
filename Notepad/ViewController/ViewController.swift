@@ -16,8 +16,8 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
     @IBOutlet var contentTextView: UITextView!
     @IBOutlet var collectionView: UICollectionView!
     
-    let picker = UIImagePickerController()
-    let fileManager = FileManager.default
+    private let picker = UIImagePickerController()
+    private let fileManager = FileManager.default
     var imageArray: [String] = []
     var note: Note?
     
@@ -34,7 +34,7 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
         if #available(iOS 11.0, *) {
             self.navigationItem.largeTitleDisplayMode = .never
         } else {
-            // Fallback on earlier versions
+            self.navigationItem.leftBarButtonItem?.title = "메모"
         }
     }
     
@@ -79,7 +79,7 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
             contentTextView.textColor = UIColor.lightGray
         }
     }
-
+    
     @IBAction func saveButton(_ sender: Any) {
         let titleToSave = titleTextField.text!
         let contentToSave = contentTextView.text!
@@ -169,6 +169,17 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
     
      }
     
+    @IBAction func cancelButton(_ sender: Any) {
+        for image in 0..<imageArray.count {
+            if fileManager.fileExists(atPath: imageArray[image]) {
+                try! fileManager.removeItem(atPath: imageArray[image])
+            }
+        }
+        
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    
     @IBAction func addPhoto(_ sender: Any) {
         let alert = UIAlertController(title: "사진추가", message: "선택", preferredStyle: .actionSheet)
         
@@ -215,8 +226,18 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
         let action = UIAlertAction(title: "추가", style: .default) { (_) in
             let textField = alert.textFields![0] as UITextField
             
-            self.imageArray.append(textField.text ?? "")
-            self.collectionView.reloadData()
+            if self.verifyURL(urlString: textField.text) != false {
+                self.imageArray.append(textField.text ?? "")
+                self.collectionView.reloadData()
+            } else {
+                let alert = UIAlertController(title: "잘못된 주소", message: "유효하지 않은 주소입니다.", preferredStyle: .alert)
+                
+                let action = UIAlertAction(title: "확인", style: .default, handler: nil)
+                
+                alert.addAction(action)
+                
+                self.present(alert, animated: true, completion: nil)
+            }
         }
         
         let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
@@ -234,9 +255,13 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
             
             let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
             
+            print(documentsURL)
+            
             let uuid = NSUUID().uuidString
 
             let fileURL = documentsURL.appendingPathComponent(uuid).appendingPathExtension("png")
+            
+            print(fileURL)
 
             let data = image.fixOrientation().pngData()
             try? data?.write(to: fileURL)
@@ -250,6 +275,14 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
     @IBAction func backgroundClick(_ sender: Any) {
         titleTextField.resignFirstResponder()
         contentTextView.resignFirstResponder()
+    }
+    
+    func verifyURL(urlString: String?) -> Bool {
+        guard let urlString = urlString, let url = URL(string: urlString) else {
+            return false
+        }
+        
+        return UIApplication.shared.canOpenURL(url)
     }
 }
 
@@ -324,10 +357,28 @@ extension ViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as! ImageCollectionViewCell
         
+        let url = imageArray[indexPath.row]
         
         if imageArray[indexPath.row].contains("http") {
-            let url = URL(string: imageArray[indexPath.row])
-            cell.imageView.kf.setImage(with: url)
+            let correctURL = URL(string: url)
+            
+            cell.imageView.kf.setImage(with: correctURL) { (result) in
+                switch result {
+                case .success(let value):
+                    print("Task done for: \(value.source.url?.absoluteString ?? "")")
+                case .failure(let error):
+                    print("Job failed: \(error.localizedDescription)")
+                    let alert = UIAlertController(title: "오류", message: "유효하지 않은 주소입니다.", preferredStyle: .alert)
+                    
+                    let action = UIAlertAction(title: "확인", style: .default) { (result) in
+                        self.imageArray.remove(at: indexPath.row)
+                    }
+                    
+                    alert.addAction(action)
+                    
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
         } else {
             cell.imageView.image = UIImage.init(contentsOfFile: imageArray[indexPath.row])
         }

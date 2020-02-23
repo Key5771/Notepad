@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1EA6336CC82E6DDAB035D7B3 /* libPods-Notepad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E6BE5566D42FE98BD46C401 /* libPods-Notepad.a */; };
+		EA2DD87124015A8F005B1AF1 /* ImageContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2DD87024015A8F005B1AF1 /* ImageContentViewController.swift */; };
+		EA2DD87324023757005B1AF1 /* ImageExtensionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2DD87224023757005B1AF1 /* ImageExtensionCollectionViewCell.swift */; };
 		EA3A3ADB23F244FB0086683C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3A3ADA23F244FB0086683C /* AppDelegate.swift */; };
 		EA3A3ADD23F244FB0086683C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3A3ADC23F244FB0086683C /* SceneDelegate.swift */; };
 		EA3A3ADF23F244FB0086683C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3A3ADE23F244FB0086683C /* ViewController.swift */; };
@@ -26,6 +28,8 @@
 		9E6BE5566D42FE98BD46C401 /* libPods-Notepad.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Notepad.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2929F8AD840199699E36B68 /* Pods-Notepad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Notepad.release.xcconfig"; path = "Target Support Files/Pods-Notepad/Pods-Notepad.release.xcconfig"; sourceTree = "<group>"; };
 		A738AC2FA9251B55BC32B2FD /* Pods-Notepad.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Notepad.debug.xcconfig"; path = "Target Support Files/Pods-Notepad/Pods-Notepad.debug.xcconfig"; sourceTree = "<group>"; };
+		EA2DD87024015A8F005B1AF1 /* ImageContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageContentViewController.swift; sourceTree = "<group>"; };
+		EA2DD87224023757005B1AF1 /* ImageExtensionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtensionCollectionViewCell.swift; sourceTree = "<group>"; };
 		EA3A3AD723F244FB0086683C /* Notepad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Notepad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA3A3ADA23F244FB0086683C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EA3A3ADC23F244FB0086683C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -111,6 +115,7 @@
 				EA3A3ADE23F244FB0086683C /* ViewController.swift */,
 				EA3A3AF123F248880086683C /* ListViewController.swift */,
 				EA3A3AFB23F54BB40086683C /* ContentViewController.swift */,
+				EA2DD87024015A8F005B1AF1 /* ImageContentViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -121,6 +126,7 @@
 				EA3A3AF323F27B140086683C /* ListTableViewCell.swift */,
 				EA8D548323F6949000FE4795 /* ImageCollectionViewCell.swift */,
 				EAAC51CF23F992D000F90591 /* ContentImageCollectionViewCell.swift */,
+				EA2DD87224023757005B1AF1 /* ImageExtensionCollectionViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -224,8 +230,10 @@
 			files = (
 				EA3A3AFC23F54BB50086683C /* ContentViewController.swift in Sources */,
 				EA3A3ADF23F244FB0086683C /* ViewController.swift in Sources */,
+				EA2DD87324023757005B1AF1 /* ImageExtensionCollectionViewCell.swift in Sources */,
 				EA3A3ADB23F244FB0086683C /* AppDelegate.swift in Sources */,
 				EA3A3ADD23F244FB0086683C /* SceneDelegate.swift in Sources */,
+				EA2DD87124015A8F005B1AF1 /* ImageContentViewController.swift in Sources */,
 				EA3A3AF223F248880086683C /* ListViewController.swift in Sources */,
 				EAAC51D023F992D000F90591 /* ContentImageCollectionViewCell.swift in Sources */,
 				EA8D548423F6949000FE4795 /* ImageCollectionViewCell.swift in Sources */,

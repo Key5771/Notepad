@@ -15,8 +15,8 @@ class ListViewController: UIViewController, NSFetchedResultsControllerDelegate {
     @IBOutlet var tableView: UITableView!
     @IBOutlet var editButton: UIBarButtonItem!
     
-    var controller: NSFetchedResultsController<NSManagedObject>?
-    var fileManager = FileManager.default
+    private var controller: NSFetchedResultsController<NSManagedObject>?
+    private var fileManager = FileManager.default
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +30,7 @@ class ListViewController: UIViewController, NSFetchedResultsControllerDelegate {
             self.navigationController?.navigationBar.prefersLargeTitles = true
             self.title = "메모"
         } else {
-            // Fallback on earlier versions
+            self.navigationItem.title = "메모"
         }
     }
     

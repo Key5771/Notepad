@@ -16,8 +16,8 @@ class ContentViewController: UIViewController {
     @IBOutlet var collectionView: UICollectionView!
     
     var note: Note?
-    var imageArray: [String] = []
-    let fileManager = FileManager.default
+    private var imageArray: [String] = []
+    private let fileManager = FileManager.default
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +30,7 @@ class ContentViewController: UIViewController {
         if #available(iOS 11.0, *) {
             self.navigationItem.largeTitleDisplayMode = .never
         } else {
-            // Fallback on earlier versions
+            self.navigationItem.leftBarButtonItem?.title = "메모"
         }
     }
     
@@ -95,6 +95,10 @@ class ContentViewController: UIViewController {
             vc?.imageArray = self.imageArray
             
             self.navigationController?.popViewController(animated: true)
+        } else if segue.identifier == "imageContent" {
+            let vc = segue.destination as? ImageContentViewController
+            
+            vc?.imageArray = imageArray
         }
     }
 }
@@ -120,6 +124,7 @@ extension ContentViewController: UICollectionViewDataSource {
 
 extension ContentViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("\(indexPath.row)")
+        collectionView.deselectItem(at: indexPath, animated: true)
+        
     }
 }

@@ -209,6 +209,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="Yyz-7k-l3E" appends="YES" id="6QC-8J-MJJ"/>
+                            <outletCollection property="gestureRecognizers" destination="aDh-Ue-ea9" appends="YES" id="A93-3n-UBH"/>
                         </connections>
                     </view>
                     <toolbarItems/>
@@ -228,6 +229,7 @@
                     <connections>
                         <outlet property="collectionView" destination="FIo-QL-djq" id="F2k-46-JLa"/>
                         <outlet property="contentTextView" destination="0xf-cf-ay1" id="vY0-xX-Ldm"/>
+                        <outlet property="swipeGestureRecognizer" destination="aDh-Ue-ea9" id="T20-u8-McJ"/>
                         <outlet property="titleTextField" destination="v0q-qu-kyG" id="kLU-NQ-1KG"/>
                     </connections>
                 </viewController>
@@ -237,6 +239,11 @@
                         <action selector="backgroundClick:" destination="BYZ-38-t0r" id="g0y-TF-axz"/>
                     </connections>
                 </tapGestureRecognizer>
+                <swipeGestureRecognizer direction="right" id="aDh-Ue-ea9">
+                    <connections>
+                        <action selector="swipeGesture:" destination="BYZ-38-t0r" id="BsY-l2-a18"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="448.80000000000001" y="115.59220389805098"/>
         </scene>
@@ -368,33 +375,32 @@
                                 <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="634-Pm-UUK">
-                                    <size key="itemSize" width="377" height="621"/>
+                                    <size key="itemSize" width="200" height="400"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="imageCell" id="vU9-ox-KKS" customClass="ImageExtensionCollectionViewCell" customModule="Notepad" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="1" width="377" height="621"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" tag="8" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="6oU-m4-68e">
-                                            <rect key="frame" x="0.0" y="0.0" width="377" height="621"/>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="imageCell" id="ePX-QM-mfg" customClass="ImageExtensionCollectionViewCell" customModule="Notepad" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="111.5" width="200" height="400"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="bjH-zy-uHf">
+                                            <rect key="frame" x="0.0" y="0.0" width="200" height="400"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="okV-du-Uli">
-                                                    <rect key="frame" x="0.0" y="0.0" width="377" height="621"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="S2n-yP-pu9">
+                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="400"/>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="okV-du-Uli" secondAttribute="bottom" id="Bd1-8v-Hsa"/>
-                                                <constraint firstItem="okV-du-Uli" firstAttribute="top" secondItem="6oU-m4-68e" secondAttribute="top" id="NqX-VQ-Hro"/>
-                                                <constraint firstItem="okV-du-Uli" firstAttribute="leading" secondItem="6oU-m4-68e" secondAttribute="leading" id="Tc8-3m-cxe"/>
-                                                <constraint firstAttribute="trailing" secondItem="okV-du-Uli" secondAttribute="trailing" id="YVn-TZ-zRH"/>
+                                                <constraint firstAttribute="trailing" secondItem="S2n-yP-pu9" secondAttribute="trailing" id="1wo-xA-t3M"/>
+                                                <constraint firstItem="S2n-yP-pu9" firstAttribute="leading" secondItem="bjH-zy-uHf" secondAttribute="leading" id="Pp3-Ub-P4f"/>
+                                                <constraint firstAttribute="bottom" secondItem="S2n-yP-pu9" secondAttribute="bottom" id="e6q-3D-G0H"/>
+                                                <constraint firstItem="S2n-yP-pu9" firstAttribute="top" secondItem="bjH-zy-uHf" secondAttribute="top" id="fsV-ve-WCZ"/>
                                             </constraints>
                                         </collectionViewCellContentView>
-                                        <size key="customSize" width="377" height="621"/>
                                         <connections>
-                                            <outlet property="imageView" destination="okV-du-Uli" id="NKd-Qo-eNg"/>
+                                            <outlet property="imageView" destination="S2n-yP-pu9" id="Si8-Sa-zg8"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>

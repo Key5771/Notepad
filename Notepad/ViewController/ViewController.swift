@@ -15,6 +15,7 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
     @IBOutlet var titleTextField: UITextField!
     @IBOutlet var contentTextView: UITextView!
     @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet var swipeGestureRecognizer: UISwipeGestureRecognizer!
     
     private let picker = UIImagePickerController()
     private let fileManager = FileManager.default
@@ -179,6 +180,17 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
         self.navigationController?.popViewController(animated: true)
     }
     
+    @IBAction func swipeGesture(_ sender: Any) {
+        if swipeGestureRecognizer.direction == .right {
+            for image in 0..<imageArray.count {
+                if fileManager.fileExists(atPath: imageArray[image]) {
+                    try! fileManager.removeItem(atPath: imageArray[image])
+                }
+            }
+            
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
     
     @IBAction func addPhoto(_ sender: Any) {
         let alert = UIAlertController(title: "사진추가", message: "선택", preferredStyle: .actionSheet)

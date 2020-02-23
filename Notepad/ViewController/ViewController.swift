@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+
+// 라이브러리 : https://github.com/onevcat/Kingfisher
 import Kingfisher
 
 class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -53,56 +55,40 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
         }
     }
     
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        textViewSetupView()
-    }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text == "" {
-            textViewSetupView()
-        }
-    }
-    
-    private func textViewSetupView() {
-        if contentTextView.text == "내용입력" {
-            contentTextView.text = ""
-            if #available(iOS 12.0, *) {
-                if self.traitCollection.userInterfaceStyle == .dark {
-                    contentTextView.textColor = UIColor.white
-                } else {
-                    contentTextView.textColor = UIColor.black
-                }
-            } else {
-                // Fallback on earlier versions
-            }
-        } else if contentTextView.text == "" {
-            contentTextView.text = "내용입력"
-            contentTextView.textColor = UIColor.lightGray
-        }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
     
     @IBAction func saveButton(_ sender: Any) {
-        let titleToSave = titleTextField.text!
-        let contentToSave = contentTextView.text!
-        let dateToSave = Date()
-        
-        let alert = UIAlertController(title: "저장", message: "저장하시겠습니까?", preferredStyle: .alert)
-        
-        let okButton = UIAlertAction(title: "확인", style: .default, handler: { (_) in
-            self.navigationController?.popViewController(animated: true)
+        if titleTextField.text == "" || contentTextView.text == "" {
+            let alert = UIAlertController(title: "오류", message: "제목 또는 내용을 입력하세요", preferredStyle: .alert)
+            let okButton = UIAlertAction(title: "확인", style: .default, handler: nil)
             
-            if self.note != nil {
-                self.updateData(title: titleToSave, content: contentToSave, updateDate: dateToSave)
-            } else {
-                self.save(title: titleToSave, content: contentToSave, createDate: dateToSave)
-            }
-        })
-        let cancelButton = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-        
-        alert.addAction(okButton)
-        alert.addAction(cancelButton)
-        
-        present(alert, animated: true)
+            alert.addAction(okButton)
+            present(alert, animated: true, completion: nil)
+        } else {
+            let titleToSave = titleTextField.text!
+            let contentToSave = contentTextView.text!
+            let dateToSave = Date()
+            
+            let alert = UIAlertController(title: "저장", message: "저장하시겠습니까?", preferredStyle: .alert)
+            
+            let okButton = UIAlertAction(title: "확인", style: .default, handler: { (_) in
+                self.navigationController?.popViewController(animated: true)
+                
+                if self.note != nil {
+                    self.updateData(title: titleToSave, content: contentToSave, updateDate: dateToSave)
+                } else {
+                    self.save(title: titleToSave, content: contentToSave, createDate: dateToSave)
+                }
+            })
+            let cancelButton = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            
+            alert.addAction(okButton)
+            alert.addAction(cancelButton)
+            
+            present(alert, animated: true)
+        }
     }
     
     private func save(title: String, content: String, createDate: Date) {
@@ -140,8 +126,7 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
     
     private func updateData(title: String, content: String, updateDate: Date) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-         
-        //We need to create a context from this container
+        
         let managedContext = appDelegate.persistentContainer.viewContext
          
         let fetchRequest:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest.init(entityName: "Note")
@@ -203,7 +188,7 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
             (action) in self.openCamera()
         }
         
-        let file = UIAlertAction(title: "사진추가", style: .default) {
+        let file = UIAlertAction(title: "외부이미지", style: .default) {
             (action) in self.openFilePath()
         }
         
@@ -232,36 +217,6 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
         }
     }
     
-    private func openFilePath() {
-        let alert = UIAlertController(title: "사진추가", message: "경로를 입력하세요.", preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: "추가", style: .default) { (_) in
-            let textField = alert.textFields![0] as UITextField
-            
-            if self.verifyURL(urlString: textField.text) != false {
-                self.imageArray.append(textField.text ?? "")
-                self.collectionView.reloadData()
-            } else {
-                let alert = UIAlertController(title: "잘못된 주소", message: "유효하지 않은 주소입니다.", preferredStyle: .alert)
-                
-                let action = UIAlertAction(title: "확인", style: .default, handler: nil)
-                
-                alert.addAction(action)
-                
-                self.present(alert, animated: true, completion: nil)
-            }
-        }
-        
-        let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
-        alert.addTextField { (textField) in
-            textField.placeholder = "경로"
-        }
-        
-        alert.addAction(action)
-        alert.addAction(cancel)
-        self.present(alert, animated: true, completion: nil)
-    }
-    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             
@@ -284,9 +239,33 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
         dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func backgroundClick(_ sender: Any) {
-        titleTextField.resignFirstResponder()
-        contentTextView.resignFirstResponder()
+    private func openFilePath() {
+        let alert = UIAlertController(title: "사진추가", message: "경로를 입력하세요.", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "추가", style: .default) { (_) in
+            let textField = alert.textFields![0] as UITextField
+            
+            if self.verifyURL(urlString: textField.text) != false {
+                self.imageArray.append(textField.text ?? "")
+                self.collectionView.reloadData()
+            } else {
+                let alert = UIAlertController(title: "오류", message: "유효하지 않은 주소입니다.", preferredStyle: .alert)
+                let action = UIAlertAction(title: "확인", style: .default, handler: nil)
+                
+                alert.addAction(action)
+                
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        
+        let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        alert.addTextField { (textField) in
+            textField.placeholder = "경로"
+        }
+        
+        alert.addAction(action)
+        alert.addAction(cancel)
+        self.present(alert, animated: true, completion: nil)
     }
     
     func verifyURL(urlString: String?) -> Bool {
@@ -295,6 +274,11 @@ class ViewController: UIViewController, UITextViewDelegate, UIImagePickerControl
         }
         
         return UIApplication.shared.canOpenURL(url)
+    }
+    
+    @IBAction func backgroundClick(_ sender: Any) {
+        titleTextField.resignFirstResponder()
+        contentTextView.resignFirstResponder()
     }
 }
 

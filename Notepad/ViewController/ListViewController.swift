@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+
+// 라이브러리 : https://github.com/onevcat/Kingfisher
 import Kingfisher
 
 class ListViewController: UIViewController, NSFetchedResultsControllerDelegate {
@@ -134,7 +136,6 @@ extension ListViewController: UITableViewDataSource {
        } else {
            cell.thumbNailImage.image = UIImage.init(contentsOfFile: address ?? "")
        }
-
        return cell
    }
 }
@@ -169,7 +170,6 @@ extension ListViewController: UITableViewDelegate {
             } catch {
                 print(error)
             }
-            
         }
     }
 }

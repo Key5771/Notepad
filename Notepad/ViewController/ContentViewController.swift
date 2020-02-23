@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+
+// 라이브러리 : https://github.com/onevcat/Kingfisher
 import Kingfisher
 
 class ContentViewController: UIViewController {
@@ -49,7 +51,6 @@ class ContentViewController: UIViewController {
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
                 return
             }
-            
             let managedContext = appDelegate.persistentContainer.viewContext
             
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Note")
@@ -97,7 +98,6 @@ class ContentViewController: UIViewController {
             self.navigationController?.popViewController(animated: true)
         } else if segue.identifier == "imageContent" {
             let vc = segue.destination as? ImageContentViewController
-            
             vc?.imageArray = imageArray
         }
     }
@@ -117,7 +117,6 @@ extension ContentViewController: UICollectionViewDataSource {
         } else {
             cell.imageView.image = UIImage.init(contentsOfFile: imageArray[indexPath.row])
         }
-        
         return cell
     }
 }

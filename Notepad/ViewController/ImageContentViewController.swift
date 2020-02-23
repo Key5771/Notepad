@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+
+// 라이브러리 : https://github.com/onevcat/Kingfisher
 import Kingfisher
 
 class ImageContentViewController: UIViewController {
@@ -34,8 +36,10 @@ class ImageContentViewController: UIViewController {
         
         let layout = collectionView!.collectionViewLayout as! UICollectionViewFlowLayout
         layout.itemSize = CGSize(width: cellWidth, height: cellHeight)
+        layout.minimumLineSpacing = 15
         collectionView?.contentInset = UIEdgeInsets(top: insetY, left: insetX, bottom: insetY, right: insetX)
         
+        collectionView.decelerationRate = UIScrollView.DecelerationRate.fast
     }
 }
 
@@ -55,7 +59,6 @@ extension ImageContentViewController: UICollectionViewDataSource {
         } else {
             cell.imageView.image = UIImage.init(contentsOfFile: imageAddress)
         }
-        
         return cell
     }
 }
@@ -73,8 +76,13 @@ extension ImageContentViewController: UICollectionViewDelegate, UIScrollViewDele
         
         var offset = targetContentOffset.pointee
         let index = (offset.x + scrollView.contentInset.left) / cellWidthIncludingSpacing
-        let roundedIndex = round(index)
+        var roundedIndex = round(index)
         
+        if scrollView.contentOffset.x > offset.x {
+            roundedIndex = floor(index)
+        } else {
+            roundedIndex = ceil(index)
+        }
         offset = CGPoint(x: roundedIndex * cellWidthIncludingSpacing - scrollView.contentInset.left, y: -scrollView.contentInset.top)
         targetContentOffset.pointee = offset
     }
